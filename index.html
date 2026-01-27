@@ -1,0 +1,768 @@
+<!--
+  WordPress-ready single-page marketing agency layout.
+  HOW TO USE (Gutenberg):
+  1) Create a new Page in WordPress → Add a “Custom HTML” block.
+  2) Paste ONLY the contents of <body> (everything between <body>...</body>) into that block.
+  3) Put the CSS from the <style> section into: Appearance → Customize → Additional CSS
+     (or Site Editor → Styles → Additional CSS).
+  Notes:
+  - Replace placeholders like [AGENCY NAME], [EMAIL], [PHONE], and links (#contact).
+  - If you use Elementor, you can drop the HTML in an HTML widget and the CSS in Site Settings → Custom CSS.
+-->
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>[AGENCY NAME] — Inbound-first Marketing Agency</title>
+  <style>
+    :root{
+      --bg: #0b0f17;
+      --panel: rgba(255,255,255,.06);
+      --panel-2: rgba(255,255,255,.10);
+      --text: rgba(255,255,255,.90);
+      --muted: rgba(255,255,255,.66);
+      --line: rgba(255,255,255,.12);
+      --brand: #6ee7ff;      /* accent */
+      --brand-2:#b5ff7d;     /* secondary */
+      --danger:#ff6b6b;
+      --shadow: 0 18px 60px rgba(0,0,0,.35);
+      --radius: 22px;
+      --radius-sm: 14px;
+      --max: 1120px;
+      --pad: clamp(18px, 3vw, 28px);
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
+
+    *{ box-sizing: border-box; }
+    html, body{ height: 100%; }
+    body{
+      margin: 0;
+      font-family: var(--font);
+      color: var(--text);
+      background:
+        radial-gradient(1200px 650px at 10% -5%, rgba(110,231,255,.18), transparent 55%),
+        radial-gradient(900px 520px at 90% 0%, rgba(181,255,125,.12), transparent 50%),
+        radial-gradient(1100px 700px at 70% 110%, rgba(110,231,255,.10), transparent 55%),
+        linear-gradient(180deg, #060810 0%, var(--bg) 55%, #050712 100%);
+      overflow-x: hidden;
+    }
+
+    a{ color: inherit; text-decoration: none; }
+    a:focus{ outline: 2px solid rgba(110,231,255,.7); outline-offset: 2px; border-radius: 8px; }
+
+    .wrap{ width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
+
+    /* Top nav */
+    .nav{
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      backdrop-filter: blur(12px);
+      background: linear-gradient(180deg, rgba(5,7,18,.75), rgba(5,7,18,.35));
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-inner{
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 14px 0;
+      gap: 12px;
+    }
+    .brand{
+      display:flex; align-items:center; gap: 10px;
+      font-weight: 750;
+      letter-spacing: .2px;
+    }
+    .logo{
+      width: 34px; height: 34px; border-radius: 10px;
+      background:
+        radial-gradient(14px 14px at 30% 30%, rgba(255,255,255,.35), transparent 60%),
+        linear-gradient(135deg, rgba(110,231,255,.95), rgba(181,255,125,.85));
+      box-shadow: 0 10px 30px rgba(110,231,255,.12);
+      border: 1px solid rgba(255,255,255,.18);
+    }
+    .nav-links{
+      display:flex; align-items:center; gap: 14px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .nav-links a{
+      color: var(--muted);
+      font-size: 14px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      transition: background .2s ease, color .2s ease;
+    }
+    .nav-links a:hover{ background: rgba(255,255,255,.06); color: var(--text); }
+
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      font-weight: 650;
+      font-size: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.18);
+      transition: transform .15s ease, background .2s ease, border-color .2s ease;
+      cursor: pointer;
+    }
+    .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.24); }
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(110,231,255,.95), rgba(181,255,125,.78));
+      border-color: rgba(255,255,255,.18);
+      color: #071018;
+    }
+
+    /* Hero */
+    .hero{ padding: 54px 0 34px; }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.35fr .65fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+    .hero-card{
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      padding: clamp(22px, 3.2vw, 34px);
+      position: relative;
+      overflow: hidden;
+      min-height: 330px;
+    }
+    .hero-card:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(520px 260px at 10% 0%, rgba(110,231,255,.22), transparent 60%),
+        radial-gradient(420px 220px at 90% 10%, rgba(181,255,125,.18), transparent 60%);
+      opacity: .95;
+      pointer-events:none;
+    }
+    .hero-card > *{ position: relative; }
+
+    .kicker{
+      display:inline-flex; align-items:center; gap: 10px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.14);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .dot{ width: 8px; height: 8px; border-radius: 999px; background: var(--brand); box-shadow: 0 0 0 5px rgba(110,231,255,.15); }
+
+    h1{
+      margin: 16px 0 10px;
+      font-size: clamp(32px, 4.2vw, 52px);
+      line-height: 1.05;
+      letter-spacing: -0.6px;
+    }
+    .lead{
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(15px, 1.5vw, 18px);
+      line-height: 1.6;
+      max-width: 62ch;
+    }
+
+    .hero-cta{
+      margin-top: 18px;
+      display:flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .mini{
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      border-radius: var(--radius);
+      padding: 18px 18px;
+      box-shadow: 0 14px 40px rgba(0,0,0,.25);
+      display:flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .mini h3{ margin: 0; font-size: 16px; letter-spacing: -.2px; }
+    .mini p{ margin: 0; color: var(--muted); font-size: 14px; line-height: 1.55; }
+    .chips{ display:flex; flex-wrap: wrap; gap: 8px; }
+    .chip{
+      font-size: 12px;
+      color: rgba(255,255,255,.78);
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+    }
+
+    /* Sections */
+    section{ padding: 38px 0; }
+    .section-head{ display:flex; align-items:flex-end; justify-content:space-between; gap: 16px; margin-bottom: 18px; }
+    .section-head h2{
+      margin: 0;
+      font-size: clamp(22px, 2.5vw, 30px);
+      letter-spacing: -.35px;
+    }
+    .section-head p{ margin: 0; color: var(--muted); line-height: 1.6; max-width: 70ch; }
+
+    .grid-3{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .grid-2{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+
+    .card{
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      padding: 18px;
+      box-shadow: 0 18px 50px rgba(0,0,0,.25);
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover{ border-color: rgba(255,255,255,.22); }
+
+    .card .top{
+      display:flex; align-items:flex-start; justify-content:space-between; gap: 10px;
+      margin-bottom: 10px;
+    }
+    .badge{
+      font-size: 12px;
+      color: rgba(7,16,24,.92);
+      background: linear-gradient(135deg, rgba(110,231,255,.9), rgba(181,255,125,.75));
+      border: 1px solid rgba(255,255,255,.18);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-weight: 750;
+      letter-spacing: .2px;
+      white-space: nowrap;
+    }
+    .card h3{ margin: 0; font-size: 18px; letter-spacing: -.25px; }
+    .card p{ margin: 8px 0 0; color: var(--muted); line-height: 1.6; font-size: 14px; }
+
+    ul.clean{ margin: 12px 0 0; padding: 0; list-style: none; display:grid; gap: 10px; }
+    .li{
+      display:flex; gap: 10px; align-items:flex-start;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+    }
+    .li .icon{
+      width: 26px; height: 26px; border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
+      flex: 0 0 auto;
+      display:flex; align-items:center; justify-content:center;
+      font-weight: 850;
+      color: rgba(255,255,255,.78);
+    }
+    .li b{ display:block; font-size: 13px; margin-bottom: 2px; }
+    .li span{ display:block; font-size: 13px; color: var(--muted); line-height: 1.45; }
+
+    /* Involvement switch */
+    .switch{
+      display:flex; align-items:center; gap: 10px; flex-wrap: wrap;
+      margin-top: 14px;
+    }
+    .seg{
+      display:flex; gap: 8px; flex-wrap: wrap;
+      padding: 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+    }
+    .seg button{
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 13px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background .2s ease, color .2s ease;
+    }
+    .seg button.active{
+      background: rgba(255,255,255,.12);
+      color: var(--text);
+    }
+
+    .involvement{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .callout{
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,.16);
+      background:
+        radial-gradient(700px 280px at 10% 0%, rgba(110,231,255,.18), transparent 65%),
+        radial-gradient(700px 280px at 90% 10%, rgba(181,255,125,.12), transparent 60%),
+        rgba(255,255,255,.05);
+      padding: 18px;
+      box-shadow: 0 18px 55px rgba(0,0,0,.28);
+      display:flex; align-items:center; justify-content:space-between; gap: 12px;
+      flex-wrap: wrap;
+    }
+    .callout strong{ font-size: 16px; }
+    .callout p{ margin: 6px 0 0; color: var(--muted); line-height: 1.55; font-size: 14px; }
+
+    /* Steps */
+    .steps{ display:grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .step{
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    .step:before{
+      content:"";
+      position:absolute; inset: -1px;
+      background: radial-gradient(420px 220px at 20% 0%, rgba(110,231,255,.10), transparent 65%);
+      pointer-events:none;
+    }
+    .step > *{ position: relative; }
+    .num{
+      width: 34px; height: 34px; border-radius: 12px;
+      display:flex; align-items:center; justify-content:center;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.06);
+      font-weight: 900;
+    }
+    .step h4{ margin: 10px 0 6px; font-size: 15px; }
+    .step p{ margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+
+    /* Contact */
+    .contact{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 14px;
+    }
+    .form{
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.04);
+      padding: 18px;
+    }
+    .field{ display:grid; gap: 6px; margin-bottom: 12px; }
+    label{ font-size: 13px; color: rgba(255,255,255,.78); font-weight: 700; }
+    input, textarea{
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(5,7,18,.45);
+      color: var(--text);
+      padding: 12px 12px;
+      font: inherit;
+    }
+    textarea{ min-height: 110px; resize: vertical; }
+    .hint{ font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+    /* Footer */
+    footer{
+      padding: 26px 0 46px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* Responsive */
+    @media (max-width: 960px){
+      .hero-grid{ grid-template-columns: 1fr; }
+      .grid-3{ grid-template-columns: 1fr; }
+      .grid-2{ grid-template-columns: 1fr; }
+      .steps{ grid-template-columns: 1fr; }
+      .contact{ grid-template-columns: 1fr; }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      *{ scroll-behavior: auto !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <div class="nav">
+    <div class="wrap">
+      <div class="nav-inner">
+        <a class="brand" href="#top" aria-label="Home">
+          <span class="logo" aria-hidden="true"></span>
+          <span>[AGENCY NAME]</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Primary">
+          <a href="#services">Services</a>
+          <a href="#involvement">Engagement</a>
+          <a href="#method">Method</a>
+          <a href="#internal">Internal Inbound</a>
+          <a href="#contact" class="btn primary">Let’s talk</a>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div id="top" class="hero">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div class="hero-card">
+          <div class="kicker"><span class="dot" aria-hidden="true"></span>Inbound-first marketing • built for real teams</div>
+          <h1>Digital + Audiovisual + Design, stitched into one consistent story.</h1>
+          <p class="lead">
+            We’re a small marketing agency that splits work into three focused studios—so your brand feels cohesive everywhere: online, on camera, and in the physical world.
+            We combine content creation with strategy and budget management to turn ideas into measurable momentum.
+          </p>
+
+          <div class="hero-cta">
+            <a class="btn primary" href="#contact">Get a proposal</a>
+            <a class="btn" href="#services">See the 3 areas</a>
+            <span class="hint">Typical response time: same business day</span>
+          </div>
+        </div>
+
+        <aside class="mini" aria-label="Highlights">
+          <div>
+            <h3>What we’re known for</h3>
+            <p>Inbound marketing, transmedia storytelling, and “phygital” branding that actually matches the real-world experience.</p>
+          </div>
+          <div class="chips" aria-label="Key strengths">
+            <span class="chip">Content marketing</span>
+            <span class="chip">Transmedia</span>
+            <span class="chip">Phygital</span>
+            <span class="chip">Events & team dynamics</span>
+            <span class="chip">Budget stewardship</span>
+          </div>
+          <a class="btn" href="#method">How we work →</a>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Three areas, one narrative</h2>
+          <p>Each studio has a clear focus—then we align everything under a single storyline, cadence, and set of brand signals.</p>
+        </div>
+      </div>
+
+      <div class="grid-3" role="list">
+        <article class="card" role="listitem">
+          <div class="top">
+            <h3>Digital</h3>
+            <span class="badge">Content marketing</span>
+          </div>
+          <p>Content built for platforms that matter—optimized for consistency, clarity, and conversion.</p>
+          <ul class="clean">
+            <li class="li"><span class="icon">D</span><div><b>Vivo Engage + social</b><span>Platform-native content that fits the feed and supports your funnel.</span></div></li>
+            <li class="li"><span class="icon">✦</span><div><b>Campaign cadence</b><span>Editorial calendars, content pillars, and weekly iteration.</span></div></li>
+            <li class="li"><span class="icon">↗</span><div><b>Inbound assets</b><span>Landing pages, lead magnets, email sequences, and nurturing.</span></div></li>
+          </ul>
+        </article>
+
+        <article class="card" role="listitem">
+          <div class="top">
+            <h3>Audiovisual</h3>
+            <span class="badge">Transmedia marketing</span>
+          </div>
+          <p>We create audiovisual pieces designed to travel across channels—each one a chapter of the same story.</p>
+          <ul class="clean">
+            <li class="li"><span class="icon">▶</span><div><b>Capsules</b><span>Short-form edits for awareness, retention, and replay value.</span></div></li>
+            <li class="li"><span class="icon">🎙</span><div><b>Interviews</b><span>Authority-building formats with punchy, reusable extracts.</span></div></li>
+            <li class="li"><span class="icon">⦿</span><div><b>Live recording</b><span>Events, live sessions, and real-time content capture.</span></div></li>
+          </ul>
+        </article>
+
+        <article class="card" role="listitem">
+          <div class="top">
+            <h3>Design</h3>
+            <span class="badge">Phygital marketing</span>
+          </div>
+          <p>Branding and print that connects the physical experience to digital touchpoints.</p>
+          <ul class="clean">
+            <li class="li"><span class="icon">B</span><div><b>Branding</b><span>Identity refresh, guidelines, and rollout across channels.</span></div></li>
+            <li class="li"><span class="icon">▦</span><div><b>Flyers & signage</b><span>Event-ready pieces that match your online narrative.</span></div></li>
+            <li class="li"><span class="icon">⧉</span><div><b>Print materials</b><span>Catalogs, one-pagers, templates, and production-ready files.</span></div></li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- INVOLVEMENT -->
+  <section id="involvement">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Two levels of involvement</h2>
+          <p>Choose what you need right now—hands-on content production, or a strategic partner that runs the plan and budget.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <h3>Pick your engagement mode</h3>
+          <span class="badge">Flexible</span>
+        </div>
+        <p>Switch between options below. (In real life, many teams start with creation and graduate into strategy.)</p>
+
+        <div class="switch" aria-label="Engagement toggle">
+          <div class="seg" role="tablist" aria-label="Engagement options">
+            <button class="active" role="tab" aria-selected="true" aria-controls="panel-create" id="tab-create" type="button">Content creator</button>
+            <button role="tab" aria-selected="false" aria-controls="panel-partner" id="tab-partner" type="button">Strategic partner</button>
+          </div>
+          <span class="hint">Tip: use “Strategic partner” when you need budget + orchestration.</span>
+        </div>
+
+        <div class="involvement">
+          <div id="panel-create" class="grid-2" role="tabpanel" aria-labelledby="tab-create">
+            <div class="card" style="box-shadow:none; background: rgba(255,255,255,.03);">
+              <div class="top"><h3>Content creator</h3><span class="badge">Production</span></div>
+              <p>We generate audiovisual and digital assets that fit your brand voice and content calendar.</p>
+              <ul class="clean">
+                <li class="li"><span class="icon">✓</span><div><b>Audiovisual capture</b><span>Capsules, interviews, live recording—ready to publish.</span></div></li>
+                <li class="li"><span class="icon">✓</span><div><b>Platform edits</b><span>Cutdowns per channel with hook, pacing, and CTA alignment.</span></div></li>
+                <li class="li"><span class="icon">✓</span><div><b>Design support</b><span>Thumbnails, templates, and brand-consistent overlays.</span></div></li>
+              </ul>
+            </div>
+            <div class="card" style="box-shadow:none; background: rgba(255,255,255,.03);">
+              <div class="top"><h3>Perfect for</h3><span class="badge">Quick wins</span></div>
+              <p>Teams that already have direction but need reliable creation capacity.</p>
+              <ul class="clean">
+                <li class="li"><span class="icon">→</span><div><b>Monthly content sprints</b><span>Batch production + steady publishing rhythm.</span></div></li>
+                <li class="li"><span class="icon">→</span><div><b>Event coverage</b><span>Capture moments and turn them into multi-channel stories.</span></div></li>
+                <li class="li"><span class="icon">→</span><div><b>Launch assets</b><span>Everything you need to announce, explain, and convert.</span></div></li>
+              </ul>
+            </div>
+          </div>
+
+          <div id="panel-partner" class="grid-2" role="tabpanel" aria-labelledby="tab-partner" hidden>
+            <div class="card" style="box-shadow:none; background: rgba(255,255,255,.03);">
+              <div class="top"><h3>Strategic marketing partner</h3><span class="badge">Strategy + budget</span></div>
+              <p>We administer your marketing budget and coordinate multiple strategies into one narrative system.</p>
+              <ul class="clean">
+                <li class="li"><span class="icon">◎</span><div><b>Transmedia promotions</b><span>Cross-channel campaigns that reinforce each other.</span></div></li>
+                <li class="li"><span class="icon">◎</span><div><b>Consistent narrative</b><span>Messaging framework + story arcs across content.</span></div></li>
+                <li class="li"><span class="icon">◎</span><div><b>Brand refresh</b><span>Visual and verbal identity updates, rolled out with care.</span></div></li>
+              </ul>
+            </div>
+            <div class="card" style="box-shadow:none; background: rgba(255,255,255,.03);">
+              <div class="top"><h3>What you get</h3><span class="badge">Operations</span></div>
+              <p>A partner that plans, runs, measures, and improves—so you don’t have to duct-tape marketing together.</p>
+              <ul class="clean">
+                <li class="li"><span class="icon">↻</span><div><b>Weekly rhythm</b><span>Planning, approvals, reporting, and iteration.</span></div></li>
+                <li class="li"><span class="icon">⚡</span><div><b>Performance loops</b><span>Test → learn → refine, aligned to your goals.</span></div></li>
+                <li class="li"><span class="icon">▣</span><div><b>Budget stewardship</b><span>Spend intentionally, track outcomes, and reallocate fast.</span></div></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout" style="margin-top:14px;">
+        <div>
+          <strong>Not sure which mode fits?</strong>
+          <p>We can start with creation for 30 days, then upgrade to a strategic partnership when you’re ready to scale.</p>
+        </div>
+        <a class="btn primary" href="#contact">Talk to us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- METHOD -->
+  <section id="method">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Our method: inbound, with a strong internal edge</h2>
+          <p>Inbound marketing is the backbone—then we go further by activating employees as your first audience and strongest signal.</p>
+        </div>
+      </div>
+
+      <div class="steps" aria-label="Method steps">
+        <div class="step">
+          <div class="num">1</div>
+          <h4>Discover</h4>
+          <p>Goals, audience, channels, and what “wins” actually means for your team.</p>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <h4>Design the narrative</h4>
+          <p>Messaging pillars, story arcs, and a repeatable content system.</p>
+        </div>
+        <div class="step">
+          <div class="num">3</div>
+          <h4>Produce + publish</h4>
+          <p>Digital posts, audiovisual chapters, and phygital design—synced.</p>
+        </div>
+        <div class="step">
+          <div class="num">4</div>
+          <h4>Measure + iterate</h4>
+          <p>Performance loops: what worked, what didn’t, and what’s next.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERNAL INBOUND -->
+  <section id="internal">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Internal inbound marketing</h2>
+          <p>We help you build buy-in inside the company—so employees understand the story, amplify it naturally, and show up to what matters.</p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <article class="card">
+          <div class="top"><h3>Employees as the first audience</h3><span class="badge">Culture + clarity</span></div>
+          <p>When internal teams “get it,” external marketing becomes consistent by default.</p>
+          <ul class="clean">
+            <li class="li"><span class="icon">★</span><div><b>Internal story kit</b><span>What we say, how we say it, and what we never say.</span></div></li>
+            <li class="li"><span class="icon">★</span><div><b>Team dynamics</b><span>Lightweight rituals that strengthen narrative alignment.</span></div></li>
+            <li class="li"><span class="icon">★</span><div><b>Employee-led content</b><span>Guided prompts and formats that are easy to maintain.</span></div></li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <div class="top"><h3>Events that reinforce the brand</h3><span class="badge">Momentum</span></div>
+          <p>We create event experiences that produce content, build culture, and generate “shareable proof.”</p>
+          <ul class="clean">
+            <li class="li"><span class="icon">◎</span><div><b>Special activations</b><span>Campaign moments tied to product, culture, or community.</span></div></li>
+            <li class="li"><span class="icon">◎</span><div><b>Live recording</b><span>Capture and repackage into transmedia chapters.</span></div></li>
+            <li class="li"><span class="icon">◎</span><div><b>Phygital touchpoints</b><span>Signage + print + QR paths that bring people online.</span></div></li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Let’s build your next story system</h2>
+          <p>Send a quick message and we’ll suggest the best engagement mode—content creation, strategic partnership, or both.</p>
+        </div>
+      </div>
+
+      <div class="contact">
+        <div class="form">
+          <!-- OPTION A: Use this simple form (requires a form handler) -->
+          <form action="#" method="post" onsubmit="return fakeSubmit(event)">
+            <div class="field">
+              <label for="name">Name</label>
+              <input id="name" name="name" type="text" placeholder="Your name" required />
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="you@company.com" required />
+            </div>
+            <div class="field">
+              <label for="message">What are you trying to achieve?</label>
+              <textarea id="message" name="message" placeholder="Tell us your goals, timeline, and channels…" required></textarea>
+            </div>
+            <button class="btn primary" type="submit">Send message</button>
+            <p class="hint" id="form-hint" style="margin-top:10px;">If you’re using WordPress, swap this form for a plugin shortcode (see the note on the right).</p>
+          </form>
+        </div>
+
+        <aside class="card" style="padding:18px;">
+          <div class="top"><h3>Fast setup in WordPress</h3><span class="badge">Recommended</span></div>
+          <p>
+            Replace the form on the left with a shortcode from a form plugin:
+            <br><span class="hint">WPForms, Contact Form 7, Gravity Forms, etc.</span>
+          </p>
+          <div class="li" style="margin-top:12px;">
+            <span class="icon">#</span>
+            <div>
+              <b>Example shortcode</b>
+              <span>[contact-form-7 id="123" title="Contact"]</span>
+            </div>
+          </div>
+          <div style="margin-top:12px; display:grid; gap: 8px;">
+            <div class="li"><span class="icon">✉</span><div><b>Email</b><span>[EMAIL]</span></div></div>
+            <div class="li"><span class="icon">☎</span><div><b>Phone</b><span>[PHONE]</span></div></div>
+            <div class="li"><span class="icon">⌁</span><div><b>Location</b><span>[CITY], [COUNTRY]</span></div></div>
+          </div>
+          <a class="btn" href="#services" style="margin-top:12px;">Explore services</a>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap" style="display:flex; align-items:center; justify-content:space-between; gap: 12px; flex-wrap: wrap;">
+      <div style="display:flex; align-items:center; gap: 10px;">
+        <span class="logo" aria-hidden="true" style="width:28px; height:28px; border-radius: 10px;"></span>
+        <span>© <span id="year"></span> [AGENCY NAME]. All rights reserved.</span>
+      </div>
+      <div style="display:flex; gap: 10px; flex-wrap: wrap;">
+        <a href="#" class="chip">Privacy</a>
+        <a href="#" class="chip">LinkedIn</a>
+        <a href="#" class="chip">Instagram</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Small enhancement: toggle involvement panels
+    const tCreate = document.getElementById('tab-create');
+    const tPartner = document.getElementById('tab-partner');
+    const pCreate = document.getElementById('panel-create');
+    const pPartner = document.getElementById('panel-partner');
+
+    function setMode(mode){
+      const isCreate = mode === 'create';
+      tCreate.classList.toggle('active', isCreate);
+      tPartner.classList.toggle('active', !isCreate);
+      tCreate.setAttribute('aria-selected', String(isCreate));
+      tPartner.setAttribute('aria-selected', String(!isCreate));
+      pCreate.hidden = !isCreate;
+      pPartner.hidden = isCreate;
+    }
+
+    tCreate?.addEventListener('click', () => setMode('create'));
+    tPartner?.addEventListener('click', () => setMode('partner'));
+
+    // Fake submit so the demo form doesn't reload your WordPress page.
+    function fakeSubmit(e){
+      e.preventDefault();
+      const hint = document.getElementById('form-hint');
+      if(hint) hint.textContent = 'Message captured (demo). In WordPress, replace this with your form plugin shortcode.';
+      return false;
+    }
+    window.fakeSubmit = fakeSubmit;
+
+    // Footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Smooth scroll (safe)
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href');
+        if(!id || id === '#') return;
+        const el = document.querySelector(id);
+        if(!el) return;
+        e.preventDefault();
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  </script>
+
+</body>
+</html>
