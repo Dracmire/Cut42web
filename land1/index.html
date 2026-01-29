@@ -137,7 +137,7 @@
       border-radius: clamp(24px, 4vw, 36px);
       border: 1px solid var(--line);
       overflow: hidden;
-      box-shadow: var(--shadow);
+      box-shadow: none;
       display:flex;
       align-items: flex-end;
     }
@@ -650,7 +650,7 @@
 
       <div class="contact">
         <div class="form">
-          <!-- Opción A: formulario simple (demo). En WordPress conviene usar plugin + shortcode. -->
+          
           <form action="#" method="post" onsubmit="return fakeSubmit(event)">
             <div class="field">
               <label for="name">Nombre</label>
@@ -661,11 +661,11 @@
               <input id="email" name="email" type="email" placeholder="tu@empresa.cl" required />
             </div>
             <div class="field">
-              <label for="message">¿Qué necesitas lograr?</label>
+              <label for="message">¿Qué proyecto tienes en mente?</label>
               <textarea id="message" name="message" placeholder="Cuéntanos tu objetivo, plazos y canales…" required></textarea>
             </div>
             <button class="btn primary" type="submit">Enviar</button>
-            <p class="hint" id="form-hint" style="margin-top:10px;">En WordPress: reemplaza este formulario por el shortcode de tu plugin.</p>
+           
           </form>
         </div>
           
