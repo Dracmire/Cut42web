@@ -139,7 +139,7 @@
       overflow: hidden;
       box-shadow: var(--shadow);
       display:flex;
-      align-items: center;
+      align-items: flex-end;
     }
     .hero-media video{
       position: absolute;
@@ -157,7 +157,7 @@
     .hero-content{
       position: relative;
       z-index: 2;
-      padding: clamp(28px, 4vw, 60px);
+      padding: clamp(24px, 4vw, 60px);
       max-width: 720px;
     }
     .hero-title{
@@ -467,10 +467,6 @@
         <div class="hero-content">
           <h1 class="hero-title">Magnificent Teams, Cinematic results</h1>
           <p class="hero-legend">Una narrativa que combina dirección creativa, producción y estrategia para convertir equipos en historias memorables.</p>
-          <div class="hero-cta">
-            <a class="btn primary" href="#contacto">Hablemos</a>
-            <a class="btn" href="#servicios">Ver las 3 áreas</a>
-          </div>
         </div>
         <div class="scroll-hint" aria-hidden="true">Continúa <span></span></div>
       </div>
@@ -569,14 +565,14 @@
             <div class="card" style="box-shadow:none; background: rgba(255,255,255,.03);">
               <div class="card modal-video" style="box-shadow:none; background: rgba(255,255,255,.03);">
                 <video autoplay muted loop playsinline poster="video-placeholder.jpg">
-                  <source src="video-placeholder.mp4" type="video/mp4" />
+                  <source src="video-placeholder3.mp4" type="video/mp4" />
                 </video>
               </div>  
             </div>
           </div>
 
           <div id="panel-socio" class="grid-2" role="tabpanel" aria-labelledby="tab-socio" hidden>
-            <div class="card" style="box-shadow:none; background: rgba(255,255,255,.03);">
+            <div class="card" style="box-shadow:none; background: none;">
               <div class="top"><h3>Socio estratégico de marketing</h3><span class="badge">Estrategia + presupuesto</span></div>
               <p>Administramos tu presupuesto y coordinamos estrategias para sostener un sistema narrativo consistente.</p>
               <ul class="clean">
@@ -588,7 +584,7 @@
             <div class="card" style="box-shadow:none; background: rgba(255,255,255,.03);">
               <div class="card modal-video" style="box-shadow:none; background: rgba(255,255,255,.03);">
                 <video autoplay muted loop playsinline poster="video-placeholder.jpg">
-                  <source src="video-placeholder.mp4" type="video/mp4" />
+                  <source src="video-placeholder2.mp4" type="video/mp4" />
                 </video>
               </div>
             </div>
