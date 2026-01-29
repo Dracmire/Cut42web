@@ -236,6 +236,32 @@
       display:flex; align-items:flex-start; justify-content:space-between; gap: 10px;
       margin-bottom: 10px;
     }
+    .modal-video{
+      padding: 0;               /* para que el video ocupe todo */
+      border-radius: var(--radius);
+      overflow: hidden;
+      min-height: 260px;        /* ajusta a gusto */
+    }
+    .modal-video video{
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+    .modal-video .top{
+      position: absolute;
+      inset: 16px 16px auto 16px; /* título arriba */
+      z-index: 2;
+    }
+    .modal-video::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(180deg, rgba(5,7,18,.35), rgba(5,7,18,.70)); /* overlay para legibilidad */
+    }
+    .modal-video > *{ position: relative; z-index: 2; }
+    .modal-video video{ position:absolute; inset:0; z-index:1; }
+
     .service-logo{
       width: 88px;
       height: 44px;
@@ -541,11 +567,11 @@
               </ul>
             </div>
             <div class="card" style="box-shadow:none; background: rgba(255,255,255,.03);">
-              <div class="top"><h3>Titulo</h3>   </div>           
+              <div class="card modal-video" style="box-shadow:none; background: rgba(255,255,255,.03);">
                 <video autoplay muted loop playsinline poster="video-placeholder.jpg">
-                <source src="video-placeholder.mp4" type="video/mp4" />
+                  <source src="video-placeholder.mp4" type="video/mp4" />
                 </video>
-              
+              </div>  
             </div>
           </div>
 
@@ -560,14 +586,14 @@
               </ul>
             </div>
             <div class="card" style="box-shadow:none; background: rgba(255,255,255,.03);">
-              <div class="top"><h3>Titulo</h3></div>
+              <div class="card modal-video" style="box-shadow:none; background: rgba(255,255,255,.03);">
                 <video autoplay muted loop playsinline poster="video-placeholder.jpg">
-                <source src="video-placeholder.mp4" type="video/mp4" />
+                  <source src="video-placeholder.mp4" type="video/mp4" />
                 </video>
-              
-            
+              </div>
+            </div>
           </div>
-        </div>
+          
       </div>
 
       <div class="callout" style="margin-top:14px;">
@@ -577,6 +603,7 @@
         </div>
         <a class="btn primary" href="#contacto">Conversemos</a>
       </div>
+        
     </div>
   </section>
 
