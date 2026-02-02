@@ -276,6 +276,14 @@
       color: rgba(255,255,255,.7);
       font-weight: 700;
     }
+    .service-logo img
+    { display: block; 
+     max-width: 100%; 
+     max-height: 100%; 
+     object-fit: contain; 
+     border-radius: inherit; 
+     /* keeps same rounded corners if image has background */ 
+    }
     .badge{
       font-size: 12px;
       color: rgba(171, 193, 212,.92);
@@ -499,7 +507,8 @@
 
         <article class="card" role="listitem">
           <div class="top">
-            <div class="service-logo" aria-label="Logo Audiovisual">LOGO</div>
+            <div class="service-logo" aria-label="Logo Audiovisual"> 
+              <img src="LOGO1.png" alt="Logo Audiovisual"> </div>
             <span class="badge">Marketing transmedia</span>
           </div>
           <p>Producción audiovisual diseñada para viajar entre canales.</p>
