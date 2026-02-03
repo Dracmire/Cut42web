@@ -1,0 +1,754 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CUT42</title>
+  <style>
+    :root{
+      --bg: #0b0f17;
+      --panel: rgba(255,255,255,.06);
+      --panel-2: rgba(255,255,255,.10);
+      --text: rgba(255,255,255,.90);
+      --muted: rgba(255,255,255,.66);
+      --line: rgba(255,255,255,.12);
+      --brand: #8b1e2d;
+      --brand-2:#5e6b75;
+      --shadow: 0 18px 60px rgba(0,0,0,.35);
+      --radius: 22px;
+      --radius-sm: 14px;
+      --max: 1120px;
+      --pad: clamp(18px, 3vw, 28px);
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
+    *{ box-sizing: border-box; }
+    html, body{ height: 100%; }
+    /* Neutral base background (no “cuts”) */
+    body{
+      margin: 0;
+      font-family: var(--font);
+      color: var(--text);
+      background: linear-gradient(180deg, #050712 0%, var(--bg) 55%, #050712 100%);
+      overflow-x: hidden;
+    }
+    a{ color: inherit; text-decoration: none; }
+    a:focus{ outline: 2px solid rgba(110,231,255,.7); outline-offset: 2px; border-radius: 8px; }
+    .wrap{ width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
+    /* Section bands: the background changes EXACTLY where the block changes */
+    .band{ position: relative; }
+    .band::before{
+      content:"";
+      position:absolute; inset: 0;
+      pointer-events:none;
+      z-index: 0;
+      opacity: 1;
+    }
+    .band > .wrap{ position: relative; z-index: 1; }
+    .band-a::before{
+      background:
+        radial-gradient(1200px 650px at 10% -5%, rgba(110,231,255,.18), transparent 55%),
+        radial-gradient(900px 520px at 90% 0%, rgba(181,255,125,.12), transparent 50%),
+        radial-gradient(1100px 700px at 70% 110%, rgba(110,231,255,.10), transparent 55%),
+        linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0));
+    }
+    .band-b::before{
+      background:
+        radial-gradient(900px 520px at 15% 0%, rgba(181,255,125,.12), transparent 55%),
+        radial-gradient(1000px 600px at 85% 20%, rgba(110,231,255,.14), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0));
+    }
+    /* Top nav */
+    .nav{
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      backdrop-filter: blur(12px);
+      background: linear-gradient(180deg, rgba(46, 48, 54,.78), rgba(5,7,18,.40));
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-inner{
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 14px 0;
+      gap: 12px;
+    }
+    .brand{
+      display:flex; align-items:center; gap: 10px;
+      font-weight: 750;
+      letter-spacing: .2px;
+    }
+    .logo{
+    width: 44px;
+    height: 34px;
+    overflow: hidden;      /* crops */
+    display: inline-flex;  /* centers content */
+    align-items: center;
+    justify-content: center;
+    padding: 0;            /* prevents it from “shrinking” */
+    background: none;      /* optional: removes the old gradient if you already use an image */
+    }
+    .logo-img{
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;     /* llena el 34x34 */
+    }
+    .nav-links{
+      display:flex; align-items:center; gap: 14px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .nav-links a{
+      color: var(--muted);
+      font-size: 14px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      transition: background .2s ease, color .2s ease;
+    }
+    .nav-links a:hover{ background: rgba(255,255,255,.06); color: var(--text); }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      font-weight: 650;
+      font-size: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.18);
+      transition: transform .15s ease, background .2s ease, border-color .2s ease;
+      cursor: pointer;
+    }
+    .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.24); }
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(122, 16, 38,.95), rgba(42, 5, 14,.78));
+      border-color: rgba(255,255,255,.18);
+      color: #abc1d4;
+    }
+    /* Hero */
+    .hero{
+      padding: 40px 0 34px;
+    }
+    .hero-media{
+      position: relative;
+      min-height: 80vh;
+      border-radius: clamp(24px, 4vw, 36px);
+      border: 0px solid var(--line);
+      overflow: hidden;
+      box-shadow: none;
+      display:flex;
+      align-items: flex-end;
+    }
+    .hero-media video{
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.06);
+    }
+    .hero-media::after{
+      content:"";
+      position:absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(5,7,18,.55), rgba(5,7,18,.70));
+    }
+    .hero-content{
+      position: relative;
+      z-index: 2;
+      padding: clamp(24px, 4vw, 60px);
+      max-width: 720px;
+    }
+    .hero-title{
+      margin: 0 0 12px;
+      font-size: clamp(34px, 5vw, 60px);
+      line-height: 1.02;
+      letter-spacing: -0.6px;
+    }
+    .hero-legend{
+      margin: 0;
+      color: rgba(255,255,255,.78);
+      font-size: clamp(15px, 1.8vw, 20px);
+      line-height: 1.6;
+      max-width: 52ch;
+    }
+    .hero-cta{
+      margin-top: 20px;
+      display:flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .scroll-hint{
+      position: absolute;
+      bottom: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display:flex;
+      align-items:right;
+      gap: 8px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .24em;
+      color: rgba(255,255,255,.65);
+      background: rgba(5,7,18,.45);
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 0;
+    }
+    .scroll-hint span{
+      display:inline-flex;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255,255,255,.7);
+      border-left: 0;
+      border-top: 0;
+      transform: rotate(45deg);
+    }
+    /* Sections */
+    section{ padding: 38px 0; }
+    .section-head{ display:flex; align-items:flex-end; justify-content:space-between; gap: 16px; margin-bottom: 18px; }
+    .section-head h2{
+      margin: 0;
+      font-size: clamp(22px, 2.5vw, 30px);
+      letter-spacing: -.35px;
+    }
+    .section-head p{ margin: 0; color: var(--muted); line-height: 1.6; max-width: 70ch; }
+    .grid-3{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 48px; }
+    .grid-2{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 48px; }
+    .card{
+      border-radius: var(--radius);
+      border: 0;
+      background: none;
+      padding: 18px;
+      box-shadow: none;
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover{ border-color: transparent; }
+    .card .top{
+      display:flex; align-items:flex-start; justify-content:space-between; gap: 10px;
+      margin-bottom: 10px;
+    }
+    .modal-video{
+      padding: 0;               /* so the video fills the whole area */
+      border-radius: var(--radius);
+      overflow: hidden;
+      min-height: 420px;        /* adjust as desired */
+    }
+    .modal-video video{
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: 50% 80%;
+    }
+    .modal-video .top{
+      position: absolute;
+      inset: 16px 16px auto 16px; /* title on top */
+      z-index: 2;
+    }
+    .modal-video::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(180deg, rgba(5,7,18,.35), rgba(5,7,18,.70)); /* overlay for readability */
+    }
+    .modal-video > *{ position: relative; z-index: 2; }
+    .modal-video video{ position:absolute; inset:0; z-index:1; }
+    .service-logo{
+      width: 264px;
+      height: 88px;
+      border-radius: 6px;
+      border: 0px solid rgba(255,255,255,0);
+      background: rgba(255,255,255,0);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size: 11px;
+      letter-spacing: .2em;
+      color: rgba(255,255,255,0);
+      font-weight: 700;
+      overflow:hidden;
+      --logo-zoom:1;
+      --logo-pos:center;
+    }
+    .service-logo img
+    { display: block;
+     max-width: 100%;
+     max-height: 100%;
+     object-fit:cover;
+     object-position:var(--logo-pos);
+     transform:scale(var(--logo-zoom));
+     transform-origin:center;
+     border-radius: inherit;
+     /* keeps same rounded corners if image has background */
+    }
+    .badge{
+      font-size: 12px;
+      color: rgba(171, 193, 212,.92);
+      background: linear-gradient(135deg, rgba(122, 16, 38,.9), rgba(42, 5, 14,.75));
+      border: 0;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-weight: 750;
+      letter-spacing: .2px;
+      white-space: nowrap;
+    }
+    .badge title{
+      align-items:center;
+      justify-content:center;
+    }
+    .card h3{ margin: 0; font-size: 18px; letter-spacing: -.25px; }
+    .card p{ margin: 8px 0 0; color: var(--muted); line-height: 1.6; font-size: 14px; }
+    ul.clean{ margin: 12px 0 0; padding: 0; list-style: none; display:grid; gap: 10px; }
+    .li{
+      display:flex; gap: 10px; align-items:flex-start;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      border: 0;
+      background: rgba(255,255,255,.04);
+    }
+    .li .icon{
+      width: 26px; height: 26px; border-radius: 10px;
+      border: 0;
+      background: rgba(255,255,255,.06);
+      flex: 0 0 auto;
+      display:flex; align-items:center; justify-content:center;
+      font-weight: 850;
+      color: rgba(255,255,255,.78);
+    }
+    .li b{ display:block; font-size: 13px; margin-bottom: 2px; }
+    .li span{ display:block; font-size: 13px; color: var(--muted); line-height: 1.45; }
+    /* Engagement toggle */
+    .switch{
+      display:flex; align-items:center; gap: 10px; flex-wrap: wrap;
+      margin-top: 14px;
+    }
+    .seg{
+      display:flex; gap: 8px; flex-wrap: wrap;
+      padding: 8px;
+      border-radius: 999px;
+      border: 0;
+      background: rgba(255,255,255,.05);
+    }
+    .seg button{
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 13px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background .2s ease, color .2s ease;
+    }
+    .seg button.active{
+      background: rgba(255,255,255,.12);
+      color: var(--text);
+    }
+    .involvement{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .callout{
+      border-radius: var(--radius);
+      border: 0;
+      background:
+        radial-gradient(700px 280px at 10% 0%, rgba(110,231,255,.18), transparent 65%),
+        radial-gradient(700px 280px at 90% 10%, rgba(181,255,125,.12), transparent 60%),
+        rgba(255,255,255,.05);
+      padding: 18px;
+      box-shadow: 0 18px 55px rgba(0,0,0,.28);
+      display:flex; align-items:center; justify-content:space-between; gap: 12px;
+      flex-wrap: wrap;
+    }
+    .callout strong{ font-size: 16px; }
+    .callout p{ margin: 6px 0 0; color: var(--muted); line-height: 1.55; font-size: 14px; }
+   /* Method: title on top, steps centered */
+    #metodo{
+      padding: 40px 0;     /* breathing room top/bottom */
+    }
+    #metodo > .wrap{
+      min-height: 50vh;    /* takes ~80% of the screen */
+      display: flex;
+      flex-direction: column;
+    }
+    /* header stays on top */
+    #metodo .section-head{
+      flex: 0 0 auto;
+    }
+    /* steps are vertically centered in the remaining space */
+    #metodo .steps{
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+    /* Steps */
+    .steps{ display:grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .step{
+      border-radius: var(--radius);
+      border: 0;
+      background: rgba(255,255,255,.04);
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    .step:before{
+      content:"";
+      position:absolute; inset: -1px;
+      background: radial-gradient(420px 220px at 20% 0%, rgba(110,231,255,.10), transparent 65%);
+      pointer-events:none;
+    }
+    .step > *{ position: relative; }
+    .num{
+      width: 34px; height: 34px; border-radius: 12px;
+      display:flex; align-items:center; justify-content:center;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.06);
+      font-weight: 900;
+    }
+    .step h4{ margin: 10px 0 6px; font-size: 15px; }
+    .step p{ margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+    /* Contact */
+    .contact{
+    }
+    .form{
+      border-radius: var(--radius);
+      border: 0;
+      background: rgba(255,255,255,.04);
+      padding: 18px;
+    }
+    .field{ display:grid; gap: 6px; margin-bottom: 12px; }
+    label{ font-size: 13px; color: rgba(255,255,255,.78); font-weight: 700; }
+    input, textarea{
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(5,7,18,.45);
+      color: var(--text);
+      padding: 12px 12px;
+      font: inherit;
+    }
+    textarea{ min-height: 110px; resize: vertical; }
+    .hint{ font-size: 12px; color: var(--muted); line-height: 1.5; }
+    /* Footer */
+    footer{
+      padding: 26px 0 46px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    /* Responsive */
+    @media (max-width: 960px){
+      .hero-media{ min-height: 75vh; }
+      .grid-3{ grid-template-columns: 1fr; }
+      .grid-2{ grid-template-columns: 1fr; }
+      .steps{ grid-template-columns: 1fr; }
+      .contact{ grid-template-columns: 1fr; }
+    }
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      *{ scroll-behavior: auto !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <div class="nav">
+    <div class="wrap">
+      <div class="nav-inner">
+        <a class="brand" href="#top" aria-label="Home">
+          <span class="logo" aria-hidden="true">
+            <img class="logo-img" src="LOGOC42.png" alt="CUT42 Logo">
+          </span>
+        </a>
+        <nav class="nav-links" aria-label="Main">
+          <a href="#servicios">Services</a>
+          <a href="#engagement">Engagement</a>
+          <a href="#metodo">Method</a>
+          <a href="#contacto" class="btn primary">Let's talk</a>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <!-- HERO -->
+  <div id="top" class="hero band band-a">
+    <div class="wrap">
+      <div class="hero-media" aria-label="Cover video">
+        <video autoplay muted loop playsinline poster="video-placeholder.jpg">
+          <source src="HEADER13.mp4" type="video/mp4" />
+        </video>
+        <div class="hero-content">
+          <h1 class="hero-title">Specialized Teams, Cinematic results</h1>
+          <p class="hero-legend">We combines creative direction, production, and strategy to turn teams into powerful stories.</p>
+        </div>
+        <div class="scroll-hint" aria-hidden="true">Scroll <span></span></div>
+      </div>
+    </div>
+  </div>
+  <!-- SERVICIOS -->
+  <section id="servicios" class="band band-b">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>The Editing Machine</h2>
+          <p>Each squad has a sharp focus; then we align everything under one story, one cadence, and consistent brand signals.</p>
+        </div>
+      </div>
+      <div class="grid-3" role="list">
+        <article class="card" role="listitem">
+          <div class="top">
+            <div class="service-logo" aria-label="Digital logo" style="--logo-zoom:2.35; --logo-pos:center;">
+              <img src="LOGO2.png" alt="Digital logo"> </div>
+          </div>
+          <span class="badge title">Content marketing</span>
+          <p>Content built for platforms that matter: consistency, clarity, and conversion.</p>
+          <ul class="clean">
+            <li class="li"><span class="icon">D</span><div><b>Viva Engage + other platforms</b><span>Native content per channel, aligned to the funnel and your voice.</span></div></li>
+            <li class="li"><span class="icon">✦</span><div><b>Campaign cadence</b><span>Editorial calendar, content pillars, and weekly iteration.</span></div></li>
+            <li class="li"><span class="icon">↗</span><div><b>Inbound assets</b><span>Landing pages, lead magnets, email, and nurturing.</span></div></li>
+          </ul>
+        </article>
+        <article class="card" role="listitem">
+          <div class="top">
+            <div class="service-logo" aria-label="Audiovisual logo" style="--logo-zoom:3.0; --logo-pos:center;">
+              <img src="LOGO1.png" alt="Audiovisual logo"> </div>
+          </div>
+          <span class="badge">Marketing transmedia</span>
+          <p>Audiovisual production designed to travel across channels.</p>
+          <ul class="clean">
+            <li class="li"><span class="icon">▶</span><div><b>Short clips</b><span>Short edits for awareness, retention, and replay value.</span></div></li>
+            <li class="li"><span class="icon">🎙</span><div><b>Interviews</b><span>Formats to build authority with reusable extracts.</span></div></li>
+            <li class="li"><span class="icon">⦿</span><div><b>Live recording</b><span>Events, live streams, and real-time content capture.</span></div></li>
+          </ul>
+        </article>
+        <article class="card" role="listitem">
+          <div class="top">
+            <div class="service-logo" aria-label="Design logo" style="--logo-zoom:2.35; --logo-pos:center;">
+              <img src="LOGO3.png" alt="Design logo"> </div>
+          </div>
+          <span class="badge">Marketing phygital</span>
+          <p>Branding and printed pieces that connect the physical with digital touchpoints.</p>
+          <ul class="clean">
+            <li class="li"><span class="icon">B</span><div><b>Branding</b><span>Identity, guidelines, and rollout across all channels.</span></div></li>
+            <li class="li"><span class="icon">▦</span><div><b>Flyers and signage</b><span>Event-ready pieces that match the online narrative.</span></div></li>
+            <li class="li"><span class="icon">⧉</span><div><b>Printed collateral</b><span>Catalogs, one-pagers, templates, and production-ready files.</span></div></li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+  <!-- MODALIDADES -->
+  <section id="engagement" class="band band-a">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Two engagement levels</h2>
+          <p>Choose what you need now: content production, or a strategic partnership that manages your advertising.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="top">
+          <h3>Choose your engagement</h3>
+          <span class="badge" style="text-align:left">Flexible</span>
+        </div>
+        <p>Switch between options. (Many teams start with creation and then scale into strategy.)</p>
+        <div class="switch" aria-label="Engagement selector">
+          <div class="seg" role="tablist" aria-label="Engagement options">
+            <button class="active" role="tab" aria-selected="true" aria-controls="panel-crea" id="tab-crea" data-mode="crea" type="button">Content creator</button>
+            <button role="tab" aria-selected="false" aria-controls="panel-socio" id="tab-socio" data-mode="socio" type="button">Strategic partner</button>
+          </div>
+          <span class="hint">Tip: use “Strategic partner” if you need to put everything in the hands of an expert.</span>
+        </div>
+        <div class="involvement">
+          <div id="panel-crea" class="grid-2" role="tabpanel" aria-labelledby="tab-crea">
+            <div class="card" style="box-shadow:none; background: none;">
+              <div class="top"><h3>Content creator</h3><span class="badge">Production</span></div>
+              <p>We produce audiovisual and digital pieces that fit your voice and your calendar.</p>
+              <ul class="clean">
+                <li class="li"><span class="icon">✓</span><div><b>Audiovisual capture</b><span>Short clips, interviews, and live recording—ready to publish.</span></div></li>
+                <li class="li"><span class="icon">✓</span><div><b>Platform-specific edits</b><span>Per-channel versions with hook, rhythm, and aligned CTAs.</span></div></li>
+                <li class="li"><span class="icon">✓</span><div><b>Design support</b><span>Thumbnails, templates, and brand-consistent overlays.</span></div></li>
+              </ul>
+            </div>
+            <div class="card" style="box-shadow:none; background: rgba(255,255,255,.03);">
+              <div class="card modal-video" style="box-shadow:none; background: rgba(255,255,255,.03);">
+                <video autoplay muted loop playsinline poster="video-placeholder.jpg">
+                  <source src="ContentCreator2.mp4" type="video/mp4" />
+                </video>
+              </div>
+            </div>
+          </div>
+          <div id="panel-socio" class="grid-2" role="tabpanel" aria-labelledby="tab-socio" hidden>
+            <div class="card" style="box-shadow:none; background: none;">
+              <div class="top"><h3>Strategic marketing partner</h3><span class="badge">Strategy</span></div>
+              <p>We manage your budget and coordinate strategies to sustain a consistent narrative system.</p>
+              <ul class="clean">
+                <li class="li"><span class="icon">◎</span><div><b>Transmedia promotions</b><span>Cross-channel campaigns that reinforce each other.</span></div></li>
+                <li class="li"><span class="icon">◎</span><div><b>Consistent narrative</b><span>Pillars, key messages, and story arcs per campaign.</span></div></li>
+                <li class="li"><span class="icon">◎</span><div><b>Brand refresh</b><span>Visual and verbal refresh, rolled out in an orderly way.</span></div></li>
+              </ul>
+            </div>
+              <div class="card modal-video" style="box-shadow:none; background: rgba(255,255,255,.03);">
+                <video autoplay muted loop playsinline poster="video-placeholder.jpg">
+                  <source src="StrategicPartner1.mp4" type="video/mp4" />
+                </video>
+              </div>
+          </div>
+      </div>
+      <div class="callout" style="margin-top:14px;">
+        <div>
+          <strong>Not sure which one fits?</strong>
+          <p>We can start with creation for 30 days, then scale into a strategic partnership when it’s time to grow.</p>
+        </div>
+        <a class="btn primary" href="#contacto">Let's talk</a>
+      </div>
+    </div>
+   </div>
+  </section>
+  <!-- METHOD -->
+  <section id="metodo" class="band band-b">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Our method: inbound + a strong internal-inbound boost</h2>
+          <p>Inbound is the base—and we amplify it by activating your employees as the first audience and most credible signal.</p>
+        </div>
+      </div>
+      <div class="steps" aria-label="Method steps">
+        <div class="step">
+          <div class="num">1</div>
+          <h4>Discovery</h4>
+          <p>Goals, audiences, channels, and what “winning” means for your business.</p>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <h4>Narrative design</h4>
+          <p>Message pillars, story arcs, and a repeatable content system.</p>
+        </div>
+        <div class="step">
+          <div class="num">3</div>
+          <h4>Production + publishing</h4>
+          <p>Digital, audiovisual, and phygital—fully synchronized.</p>
+        </div>
+        <div class="step">
+          <div class="num">4</div>
+          <h4>Measurement + improvement</h4>
+          <p>What worked, what didn’t, and the next experiment (no fluff).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- CONTACTO -->
+  <section id="contacto" class="band band-b" style="display:flex; justify-content:center; align-items:center;">
+    <div class="wrap" style="width:100%;">
+      <div class="section-head">
+        <div>
+          <h2>Let's talk</h2>
+          <p>Leave us a message and we’ll suggest the ideal engagement: creation, strategic partnership, or both.</p>
+        </div>
+      </div>
+      <div class="contact">
+        <div class="form">
+          <form action="#" method="post" onsubmit="return fakeSubmit(event)">
+            <div class="field">
+              <label for="name">Name</label>
+              <input id="name" name="name" type="text" placeholder="Your name" required />
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="r.molina@cut42.com" required />
+            </div>
+            <div class="field">
+              <label for="message">What project do you have in mind?</label>
+              <textarea id="message" name="message" placeholder="Tell us your goal, timelines, and channels…" required></textarea>
+            </div>
+            <button class="btn primary" type="submit">Send</button>
+          </form>
+        </div>
+         </div>
+        </div>
+  </section>
+  <footer class="band band-a">
+    <div class="wrap" style="display:flex; align-items:center; justify-content:space-between; gap: 12px; flex-wrap: wrap;">
+      <div style="display:flex; align-items:center; gap: 10px;">
+        <span class="logo" aria-hidden="true" style="width:28px; height:28px; border-radius: 10px;"></span>
+        <span>© <span id="year"></span> CUT42 All rights reserved.</span>
+      </div>
+      <div style="display:flex; gap: 10px; flex-wrap: wrap;">
+        <a href="#" class="chip">Privacy</a>
+        <a href="#" class="chip">LinkedIn</a>
+        <a href="#" class="chip">Instagram</a>
+      </div>
+    </div>
+  </footer>
+  <script>
+  // DOM ready (the script is already at the end, but this ensures safety)
+  (function () {
+    // Elements
+    const tCrea = document.getElementById('tab-crea');
+    const tSocio = document.getElementById('tab-socio');
+    const pCrea = document.getElementById('panel-crea');
+    const pSocio = document.getElementById('panel-socio');
+    // Guard in case elements are missing
+    if (!tCrea || !tSocio || !pCrea || !pSocio) {
+      // do not block the page if something is missing
+      console.warn('Engagement switch: missing elements (tab or panel).');
+      return;
+    }
+    function setMode(mode) {
+      const isCrea = mode === 'crea';
+      // Buttons (class / aria)
+      tCrea.classList.toggle('active', isCrea);
+      tSocio.classList.toggle('active', !isCrea);
+      tCrea.setAttribute('aria-selected', String(isCrea));
+      tSocio.setAttribute('aria-selected', String(!isCrea));
+      // Panels: hidden + aria-hidden + style.display (more robust)
+      pCrea.hidden = !isCrea;
+      pCrea.setAttribute('aria-hidden', String(!isCrea));
+      pCrea.style.display = isCrea ? '' : 'none';
+      pSocio.hidden = isCrea;
+      pSocio.setAttribute('aria-hidden', String(isCrea));
+      pSocio.style.display = isCrea ? 'none' : '';
+    }
+    // Delegation / listeners for the seg buttons
+    document.querySelectorAll('.seg button[role="tab"]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const mode = btn.dataset.mode || (btn.id === 'tab-crea' ? 'crea' : 'socio');
+        setMode(mode);
+      });
+      // allow keyboard operation if desired (Enter / Space)
+      btn.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          btn.click();
+        }
+      });
+    });
+    // Initialize state (matches the HTML where tab-crea is active by default)
+    setMode('crea');
+    // The rest of the existing utilities (fakeSubmit, year, scroll) can stay here...
+    window.fakeSubmit = window.fakeSubmit || function(e){
+      e && e.preventDefault && e.preventDefault();
+      const hint = document.getElementById('form-hint');
+      if(hint) hint.textContent = 'Message captured (demo). In WordPress, use the shortcode from your forms plugin.';
+      return false;
+    };
+    document.getElementById('year') && (document.getElementById('year').textContent = new Date().getFullYear());
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (ev) => {
+        const id = a.getAttribute('href');
+        if(!id || id === '#') return;
+        const el = document.querySelector(id);
+        if(!el) return;
+        ev.preventDefault();
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  })();
+</script>
+</body>
+</html>
