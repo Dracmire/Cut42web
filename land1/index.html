@@ -556,14 +556,14 @@
       <div class="card">
         <div class="top">
           <h3>Elige tu modalidad</h3>
-          <span class="badge", align:left >Flexible</span>
+          <span class="badge" style="text-align:left">Flexible</span>
         </div>
         <p>Cambia entre opciones. (Muchos equipos parten con creación y luego escalan a estrategia.)</p>
 
         <div class="switch" aria-label="Selector de modalidad">
           <div class="seg" role="tablist" aria-label="Opciones de modalidad">
-            <button class="active" role="tab" aria-selected="true" aria-controls="panel-crea" id="tab-crea" type="button">Creador de contenido</button>
-            <button role="tab" aria-selected="false" aria-controls="panel-socio" id="tab-socio" type="button">Socio estratégico</button>
+            <button class="active" role="tab" aria-selected="true" aria-controls="panel-crea" id="tab-crea" data-mode="crea" type="button">Creador de contenido</button>
+            <button role="tab" aria-selected="false" aria-controls="panel-socio" id="tab-socio" data-mode="socio" type="button">Socio estratégico</button>
           </div>
           <span class="hint">Tip: usa “Socio estratégico” si necesitas dejar todo en manos de un Experto.</span>
         </div>
@@ -704,49 +704,80 @@
   </footer>
 
   <script>
-    // Toggle de modalidades
+  // DOM ready (el script ya está al final, pero esto garantiza seguridad)
+  (function () {
+    // Elementos
     const tCrea = document.getElementById('tab-crea');
     const tSocio = document.getElementById('tab-socio');
     const pCrea = document.getElementById('panel-crea');
     const pSocio = document.getElementById('panel-socio');
 
-    function setMode(mode){
+    // Defensa por si faltan elementos
+    if (!tCrea || !tSocio || !pCrea || !pSocio) {
+      // no bloquear la página si algo falta
+      console.warn('Switch de modalidades: faltan elementos (tab o panel).');
+      return;
+    }
+
+    function setMode(mode) {
       const isCrea = mode === 'crea';
+
+      // Botones (clase / aria)
       tCrea.classList.toggle('active', isCrea);
       tSocio.classList.toggle('active', !isCrea);
       tCrea.setAttribute('aria-selected', String(isCrea));
       tSocio.setAttribute('aria-selected', String(!isCrea));
+
+      // Panels: hidden + aria-hidden + style.display (más robusto)
       pCrea.hidden = !isCrea;
+      pCrea.setAttribute('aria-hidden', String(!isCrea));
+      pCrea.style.display = isCrea ? '' : 'none';
+
       pSocio.hidden = isCrea;
+      pSocio.setAttribute('aria-hidden', String(isCrea));
+      pSocio.style.display = isCrea ? 'none' : '';
     }
 
-    tCrea?.addEventListener('click', () => setMode('crea'));
-    tSocio?.addEventListener('click', () => setMode('socio'));
+    // Delegación / listeners para los botones del seg
+    document.querySelectorAll('.seg button[role="tab"]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const mode = btn.dataset.mode || (btn.id === 'tab-crea' ? 'crea' : 'socio');
+        setMode(mode);
+      });
+      // permitir operación por teclado si se desea (Enter / Space)
+      btn.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          btn.click();
+        }
+      });
+    });
 
-    // Demo submit: no recarga la página
-    function fakeSubmit(e){
-      e.preventDefault();
+    // Inicializar estado (coincide con el HTML que tiene tab-crea activo por defecto)
+    setMode('crea');
+
+    // Resto de utilidades existentes (fakeSubmit, año, scroll) pueden seguir aquí...
+    window.fakeSubmit = window.fakeSubmit || function(e){
+      e && e.preventDefault && e.preventDefault();
       const hint = document.getElementById('form-hint');
       if(hint) hint.textContent = 'Mensaje capturado (demo). En WordPress, usa el shortcode de tu plugin de formularios.';
       return false;
-    }
-    window.fakeSubmit = fakeSubmit;
-
-    // Año
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Scroll suave
+    };
+    document.getElementById('year') && (document.getElementById('year').textContent = new Date().getFullYear());
     document.querySelectorAll('a[href^="#"]').forEach(a => {
-      a.addEventListener('click', (e) => {
+      a.addEventListener('click', (ev) => {
         const id = a.getAttribute('href');
         if(!id || id === '#') return;
         const el = document.querySelector(id);
         if(!el) return;
-        e.preventDefault();
+        ev.preventDefault();
         el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     });
-  </script>
+  })();
+</script>
+
+    
 
 </body>
 </html>
