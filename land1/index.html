@@ -389,20 +389,27 @@
     .callout p{ margin: 6px 0 0; color: var(--muted); line-height: 1.55; font-size: 14px; }
 
     
-    /* Método: ocupa ~80% de la pantalla y centra contenido */
+   /* Método: título arriba, steps centrados */
     #metodo{
-      min-height: 80vh;
-      display: flex;
-      align-items: center;
-      padding: 70px 0;
-    }
-    #metodo > .wrap{
-      width: 100%;
+      padding: 70px 0;     /* aire arriba/abajo */
     }
 
-    /* Steps: más aire */
-    #metodo .steps{ gap: 18px; }
-    #metodo .step{ padding: 20px; }
+    #metodo > .wrap{
+      min-height: 80vh;    /* ocupa ~80% de la pantalla */
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* header se queda arriba */
+    #metodo .section-head{
+      flex: 0 0 auto;
+    }
+
+    /* steps se centran verticalmente en el espacio restante */
+    #metodo .steps{
+      margin-top: auto;
+      margin-bottom: auto;
+    }
 
     /* Steps */
     .steps{ display:grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
