@@ -85,12 +85,20 @@
       letter-spacing: .2px;
     }
     .logo{
-      width: 34px; height: 34px; border-radius: 10px;
-      background:
-        radial-gradient(14px 14px at 30% 30%, rgba(255,255,255,.35), transparent 60%),
-        linear-gradient(135deg, rgba(122, 16, 38,.95), rgba(46, 48, 54,.85));
-      box-shadow: 0 10px 30px rgba(122, 16, 38,.12);
-      border: 1px solid rgba(255,255,255,.18);
+    width: 34px;
+    height: 34px;
+    overflow: hidden;      /* recorta */
+    display: inline-flex;  /* centra contenido */
+    align-items: center;
+    justify-content: center;
+    padding: 0;            /* evita que se “achique” */
+    background: none;      /* opcional: quita el gradiente viejo si ya usas imagen */
+    }
+    .logo-img{
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;     /* llena el 34x34 */
     }
     .nav-links{
       display:flex; align-items:center; gap: 14px;
@@ -463,7 +471,9 @@
     <div class="wrap">
       <div class="nav-inner">
         <a class="brand" href="#top" aria-label="Inicio">
-          <span class="logo" aria-hidden="true" style="display:block; object-fit:cover;"><img src="LOGOC42.png" alt="LogoC42"></span>
+          <span class="logo" aria-hidden="true">
+            <img class="logo-img" src="LOGOC42.png" alt="Logo CUT42">
+          </span>
           <span>CUT42</span>
         </a>
 
