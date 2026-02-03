@@ -71,7 +71,7 @@
       top: 0;
       z-index: 30;
       backdrop-filter: blur(12px);
-      background: linear-gradient(180deg, rgba(5,7,18,.78), rgba(5,7,18,.40));
+      background: linear-gradient(180deg, rgba(46, 48, 54,.78), rgba(5,7,18,.40));
       border-bottom: 1px solid var(--line);
     }
     .nav-inner{
@@ -88,7 +88,7 @@
       width: 34px; height: 34px; border-radius: 10px;
       background:
         radial-gradient(14px 14px at 30% 30%, rgba(255,255,255,.35), transparent 60%),
-        linear-gradient(135deg, rgba(122, 16, 38,.95), rgba(171, 193, 212,.85));
+        linear-gradient(135deg, rgba(122, 16, 38,.95), rgba(46, 48, 54,.85));
       box-shadow: 0 10px 30px rgba(122, 16, 38,.12);
       border: 1px solid rgba(255,255,255,.18);
     }
@@ -412,8 +412,6 @@
       display:grid;
       grid-template-columns: 1.1fr .9fr;
       gap: 14px;
-      display: flex;
-      justify-content: center;
     }
     .form{
       border-radius: var(--radius);
@@ -676,7 +674,7 @@
   </section>
 
   <!-- CONTACTO -->
-  <section id="contacto" class="band band-b" style="display:flex; align-items:center; justify-content:space-between;>
+  <section id="contacto" class="band band-b" display: flex;  justify-content: center; align-items:center; justify-content:space-between;>
     <div class="wrap" width: 100%;>
       <div class="section-head">
         <div>
