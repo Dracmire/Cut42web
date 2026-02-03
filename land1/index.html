@@ -388,6 +388,15 @@
     .callout strong{ font-size: 16px; }
     .callout p{ margin: 6px 0 0; color: var(--muted); line-height: 1.55; font-size: 14px; }
 
+    
+    .metodo.wrap{
+      min-height: 80vh;              /* ocupa ~80% de la altura de pantalla */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;        /* centra el contenido en vertical */
+      padding-top: 38px;              /* conserva aire arriba/abajo */
+      padding-bottom: 38px;
+      }
     /* Steps */
     .steps{ display:grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
     .step{
@@ -472,7 +481,6 @@
           <span class="logo" aria-hidden="true">
             <img class="logo-img" src="LOGOC42.png" alt="Logo CUT42">
           </span>
-          <span>CUT42</span>
         </a>
 
         <nav class="nav-links" aria-label="Principal">
